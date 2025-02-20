@@ -474,7 +474,7 @@ function save_to_local($weburl, $savepath = '') {
 	if (substr($savepath, -1) != '/') $savepath .= '/';
 	if (!is_dir($savepath)) @mkdir($savepath, 0777);
 	
-	$imgurl = 'http://open.thumbshots.org/image.pxf?url='.$weburl;
+	$imgurl = 'https://cdn.iocdn.cc/mshots/v1/'.$weburl.'?w=456&h=300';
 	$newpath = $savepath.$weburl.'.jpg';
 	$data = get_url_content($imgurl);
 	if (strlen($data) != 1984) {

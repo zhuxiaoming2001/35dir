@@ -1,0 +1,200 @@
+模板标签使用说明文档
+35dir系统主要采用Smarty作为模板引擎，标签的左/右结束符可通过 “source/include/smarty.php”文件来修改，可修改为你自己喜欢的方式，系统默认使用“{#”和“#}”来表示标签的开始和结束，例如：{#$变量名#}。升级Smarty模板引擎只需下载最新的版本，覆盖“source/extend/smarty”目录下的文件即可。对于不熟悉Smarty模板引擎的朋友，可参考Smarty相关使用手册。
+ 
+一、网站通用标签
+$site_root ----------------------------------------------------------- 网站根目录
+$site_name ---------------------------------------------------------- 网站名称
+$site_title ------------------------------------------------------------- 网站标题（浏览器标题栏）
+$site_url -------------------------------------------------------------- 网站URL
+$site_keywords ----------------------------------------------------- 网站关键词，用于SEO
+$site_description ---------------------------------------------------- 网站描述，用于SEO
+$site_copyright ----------------------------------------------------- 网站底部版块，支持HTML
+$site_rss ------------------------------------------------------------- RSS订阅图标
+$site_path ----------------------------------------------------------- 当前位置导航，例如：当前位置：35dir网站目录 > 娱乐休闲
+ 
+二、网站函数标签（以下函数返回值均为数组）
+ 
+1. 分类列表函数 
+ 
+get_categories($cate_id, $top_num, $is_best)
+ 
+参数说明：
+$cate_id – 默认为0，当指定cate_id值时，则显示指定cate_id下的内容
+$top_num – 设置显示记录的条数，默认显示所有，指定值时，显示指定数目的记录
+$is_best – 是否显示推荐的内容，默认为false，设为true，显示推荐的内容
+ 
+使用示例：
+ 
+<ul class=”cate_list”>
+{#foreach from=get_categories(1, 10, false) item=item#}
+<li><a href="{#$item.cate_link#}" title="{#$item.cate_name#}">{#$item.cate_name#}</a> <em>({#$item.cate_postcount#})</em></li>
+{#/foreach#}
+</ul>
+复制代码
+ 
+循环体中可使用的字段：
+$cate_id -------------------------------------------------------------- 分类ID
+$cate_name --------------------------------------------------------- 分类名称
+$cate_childcount --------------------------------------------------- 当前分类下的子分类数
+$cate_postcount --------------------------------------------------- 分类下的内容统计，例如“娱乐休闲（2046）”分类下有2046个站点
+$cate_link ------------------------------------------------------------ 分类链接
+ 
+2. 显示站点列表函数
+ 
+get_websites($cate_id = 0, $top_num = 10, $is_best = false, $sortby = 'utime', $order = 'desc')
+ 
+参数说明：
+$cate_id – 默认为0，当指定cate_id值时，则显示指定cate_id下的内容
+$top_num –设置显示记录的条数，默认显示10条记录，指定值时，显示指定数目的记录
+$is_best –是否显示推荐的内容，默认为false，设为true,显示推荐的内容
+$sort_by – 默认为utime，可选值为（instat-点入次数, outstat-点出次数, views-浏览次数, utime-更新时间），当指定值时，则按指定字段来进行内容排序
+$order – 默认为DESC，可选值为（DESC为倒序排列，ASC为正序排列）
+ 
+使用示例：
+<ul class=”website”>
+{#foreach from=get_websites(0, 10, false) item=new#}
+<li><img src="{#$new.web_thumb#}" width="100" height="80" alt="{#$new.web_name#}" /><h3><a href="{#$new.web_link#}" title="{#$new.web_name#}">{#$new.web_name#}</a></h3><p>{#$new.web_intro#}</p><address><a href="{#$new.web_url#}" target="_blank" class="visit">{#$new.web_url#}</a> - <span class="gre">{#$new.web_utime#}</span></address></li>
+{#/foreach#}
+</ul>
+复制代码
+循环体中可使用的字段：
+$web_id -------------------------------------------------------------- 站点ID
+$cate_name --------------------------------------------------------- 分类名称
+$web_name --------------------------------------------------------- 网站名称
+$web_url ------------------------------------------------------------- 网站URL
+$web_tags ----------------------------------------------------------- 网站TAG标签
+$web_thumb -------------------------------------------------------- 网站缩略图
+$web_intro ----------------------------------------------------------- 网站简介
+$web_utime ---------------------------------------------------------- 更新时间
+$web_views ---------------------------------------------------------- 浏览次数
+$web_arank ---------------------------------------------------------- Alexa世界排名
+$web_prank ---------------------------------------------------------- Google PageRank
+$web_srank ----------------------------------------------------------- Sogou Rank
+$web_link -------------------------------------------------------------- 网站详细链接
+ 
+3. 数据归档函数（注：此函数需要使用双重循环来实现）
+ 
+get_archives()
+ 
+使用示例：
+ 
+<ul class=”arclist”>
+{#foreach from=get_archives() key=year item=arr#}
+<li>
+<h3>{#$year#}年</h3>
+<p>
+{#foreach from=$arr key=month item=sitecount#}
+<a href="{#arc_link#}" title="{#$year#}年{#$month#}月共有{#$sitecount#}个站点">{#$month#}月</a>
+{#/foreach#}
+</p>
+</li>
+{#/foreach#}
+</ul>
+复制代码
+ 
+4. 友情链接函数
+ 
+get_links()
+ 
+使用示例：
+ 
+<ul class=”linklist”>
+{#foreach from=get_links() item=item#}
+<li>
+<a href="{#$item.link_url#}" target="_blank">{#$item.link_name#}</a>
+</li>
+{#/foreach#}
+</ul>
+复制代码
+ 
+循环体中可使用的字段：
+$link_name -------------------------------------------------------------- 链接名称
+$link_logo ---------------------------------------------------------------- LOGO地址
+$link_url ------------------------------------------------------------------ 链接URL
+ 
+5. 广告函数
+ 
+get_adcode(广告ID)
+ 
+使用示例：
+<div class="adbox">{#get_adcode(1)#}</div>
+复制代码
+ 
+6. 自定义标签
+ 
+后台的所添加的自定义标签，均可通过这样{#$label.标签名称#}的方式来调用
+ 
+使用示例：
+<div id="other">{#$label.google_300x250#}</div>
+复制代码
+ 
+7. 站点统计
+ 
+{#$stat.模块名称#}，可调用的有category, website
+ 
+使用示例：
+<div class="stats">共 {#$stat.category#} 个主题分类，共收录个 {#$stat.website#} 站点</div>
+复制代码
+ 
+以下是各个页面模块可使用的标签说明：
+ 
+列表页通用标签$weblist、$showpage，可用于directory.html, update.html, archives.html, search.html
+$weblist ----------------------------------------------------------- 网站列表
+$showpage ------------------------------------------------------ 列表分页（显示首页，上一页，下一页，尾页）
+ 
+使用示例：
+<ul class="listbox">
+{#foreach from=$weblist item=item name=list_website#}
+<li{#if $smarty.foreach.list_website.iteration % 2 == 1#} class="gray-bg"{#/if#}><a href="{#$item.web_link#}"><img src="{#$item.web_thumb#}" width="100" height="80" alt="{#$item.web_name#}" /></a><div class="info"><h3><a href="{#$item.web_link#}" title="{#$item.web_name#}">{#$item.web_name#}</a></h3><p>{#$item.web_intro#}</p><address><a href="{#$item.web_url#}" target="_blank" class="visit">{#$item.web_url#}</a></address></div><div class="attr">PageRank：<span class="gre">{#$item.web_prank#}</span> / 10<br />AlexaRank：<span class="gre">{#$item.web_arank#}</span><br />人气指数：<span class="org">{#$item.web_views#}</span><br />收录时间：<span class="gre">{#$item.web_utime#}</span></div></li>
+{#foreachelse#}
+<li>该目录下无任何内容！</li>
+{#/foreach#}
+</ul>
+<div class="showpage">{#$showpage#}</div>
+复制代码
+ 
+一、网站首页（index.html）
+可使用上面的所有标签及函数。
+ 
+二、 目录列表页专用标签（directory.html）
+$category_name ----------------------------------------------------------- 当前分类名称
+$child_category ----------------------------------------------------------- （数组格式）当前分类下的子分类
+ 
+使用示例：
+<h3>{#$category_name#}</h3>
+<ul class="subcate">
+{#foreach from=$child_category item=c#}
+{#if $cate_id == $c.cate_id#}
+<li class="highlight">{#$c.cate_name#} <em>({#$c.cate_postcount#})</em></li>
+{#else#}
+<li><a href="{#$c.cate_link#}" title="{#$c.cate_name#}">{#$c.cate_name#}</a> <em>({#$c.cate_postcount#})</em></li>
+{#/if#}
+{#/foreach#}
+</ul>
+复制代码
+循环体中可使用的字段：
+$cate_id -------------------------------------------------------------- 分类ID
+$cate_name --------------------------------------------------------- 分类名称
+$cate_postcount --------------------------------------------------- 分类下的内容统计，例如“娱乐休闲（2046）”分类下有2046个站点
+$cate_link ------------------------------------------------------------ 分类链接
+ 
+三、 最近更新页专用标签（update.html）
+$days ------------------------------------------------------------------ 当前选择的时间周期
+$timescope ----------------------------------------------------------- （数组格式）时间范围
+ 
+使用示例：
+<ul>
+{#foreach from=$timescope item=v key=k#}
+{#if $days == $v.time_id#}
+<li class="select">{#$v.time_text#}</li>
+{#else#}
+<li><a href="{#$v.time_link#}">{#$v.time_text#}</a></li>
+{#/if#}
+{#/foreach#}
+</ul>
+复制代码
+循环体中可使用的字段：
+$time_id -------------------------------------------------------------- 时间周期，例如：24小时，3天内，1周内
+$time_text ----------------------------------------------------------- 时间名称
+$time_link ------------------------------------------------------------ 时间链接
+

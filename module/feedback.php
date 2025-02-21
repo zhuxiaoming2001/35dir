@@ -50,7 +50,7 @@ if (!$smarty->isCached($tempfile)) {
 			'fb_date' => $fb_date,
 		);
 		
-		$DB->insert($DB->table('feedback'), $data);
+		$DB->insert($DB->table('feedbacks'), $data);
 		unset($_SESSION['code']);
 				
 		msgbox('您的意见已经提交，谢谢您对我们的支持！', './');

@@ -52,7 +52,26 @@ if (!$smarty->isCached($tempfile)) {
 		
 		$DB->insert($DB->table('feedbacks'), $data);
 		unset($_SESSION['code']);
+		//发送邮件
+			if (!empty($options['smtp_host']) && !empty($options['smtp_port']) && !empty($options['smtp_auth']) && !empty($options['smtp_user'])  && !empty($options['smtp_pass'])) {
+				require(APP_PATH.'include/sendmail.php');
 				
+				$smarty->assign('site_name', $options['site_name']);
+				$smarty->assign('site_url', $options['site_url']);
+				$smarty->assign('user_email', $user_email);
+				$smarty->assign('user_pass', $user_pass);
+				$smarty->assign('post_time', date('Y-m-d H:i:s', $post_time));
+				$smarty->assign('active_link', $active_link);
+				$smarty->assign('fb_content', $fb_content);
+				$smarty->assign('fb_email', $fb_email);
+				$smarty->assign('fb_date', $fb_date);
+				$mailbody = $smarty->fetch('feedback_mail.html');
+
+				$admin_email = $options['admin_email'];// 获取管理员邮箱
+                if (!sendmail($admin_email, '【'.$options['site_name'].'】新的用户反馈', $mailbody)) {
+					msgbox('邮件发送失败！请检查邮件发送功能设置是否正确或邮件地址错误！');	
+				}
+			}		
 		msgbox('您的意见已经提交，谢谢您对我们的支持！', './');
 	}
 }

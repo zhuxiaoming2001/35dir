@@ -31,6 +31,7 @@ a:hover {color: #f30; text-decoration: none;}
 #options li a {color: #555; display: block; height: 25px; line-height: 25px; text-decoration: none; text-align: center;}
 #options li a:hover {background: #1791de; color: #fff; display: block; text-decoration: none;}
 .current {background: #1791de; color: #fff; display: block; text-decoration: none;}
+.content img{max-width:100%; height:auto !important}
 /* login */
 #login {color: #fff; float: right; padding: 8px; text-align: right;}
 #login a {color: #fff;}

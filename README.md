@@ -29,9 +29,11 @@ PHP + MySQL
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1、将程序上传到网站根目录
+2、运行 http://你的域名/install/ 按提示安装程序
+3、登录后台 http://你的域名/system/login.php
+4、设置网站信息
+5、基本完成
 
 #### 使用说明
 

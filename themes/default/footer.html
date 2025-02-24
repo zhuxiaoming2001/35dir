@@ -3,4 +3,21 @@
     	<div id="fmenu">{#foreach from=get_pages() item=item#}<a href="{#$item.page_link#}">{#$item.page_name#}</a> | {#/foreach#}<a href="?mod=update">最新收录</a> | <a href="?mod=archives">数据归档</a> | <a href="?mod=top">TOP排行榜</a> | <a href="?mod=sitemap">站点地图</a></div>
         <div id="fcopy">{#$site_copyright#}</div>
 		<div id="fcopy">{#insert name="script_time"#}</div>
+	    <div id="onlineCounter">当前在线：加载中...</div>
+<script>
+// 定时更新（每60秒）
+function updateCounter() {
+    fetch('/data/online_stats/online.php')
+        .then(response => response.text())
+        .then(count => {
+            document.getElementById('onlineCounter').innerHTML = 
+                `当前在线：${count}人`;
+        })
+        .catch(() => console.log('统计服务不可用'));
+}
+// 页面加载时立即执行
+updateCounter();
+// 设置定时器
+setInterval(updateCounter, 60000);
+</script>
     </div>

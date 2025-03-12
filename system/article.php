@@ -251,7 +251,7 @@ if (in_array($action, array('saveadd', 'saveedit'))) {
 	} elseif ($action == 'saveedit') {
 		$art_id = intval($_POST['art_id']);
 		$where = array('art_id' => $art_id);
-		unset($art_data['art_ctime']);
+		//unset($art_data['art_ctime']);
 		
 		$DB->update($table, $art_data, $where);
 		$DB->query("UPDATE ".$DB->table('categories')." SET cate_postcount=cate_postcount+1 WHERE cate_mod='article' AND cate_id=$cate_id");

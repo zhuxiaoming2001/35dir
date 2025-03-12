@@ -2,7 +2,7 @@
  * @Author       :  　 @祥💥　技术支持
  * @Mail         : 5110@shejiz.cn
  * @Date         : 2025-02-12 15:29:22
- * @LastEditTime : 2025-02-15 11:07:23
+ * @LastEditTime : 2025-03-08 09:18:23
  * @LastEditors  :  　 @祥💥　技术支持
  * @Description  : 
  * @FilePath     : \35dir\README.md
@@ -21,6 +21,10 @@
 3. 增加用户昵称重复限制开关
 
 演示站点：www.95dir.com
+
+#### 优化修复日志
+2025年3月8日    后台修改文章同时更新发布时间
+2025年3月7日    修复图片上传，适配PHP5.2+
 
 #### 软件架构
 PHP + MySQL
